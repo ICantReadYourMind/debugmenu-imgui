@@ -11,3 +11,4 @@ Plugins that used aap's debugmenu are fully compatible with this as this is inte
 ## Thanks to:
 aap (for the original debugmenu)
 ermaccer (for his d3d9 hook and ImGui implementation)
+TsudaKageyu (for MinHook)
