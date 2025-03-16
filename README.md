@@ -12,7 +12,11 @@ Plugins that used aap's debugmenu are fully compatible with this as this is inte
 Setup plugin-sdk and build using the solution in the project-files folder
 
 ## Thanks to:
+
 aap (for the original debugmenu)
+
 ermaccer (for his d3d9 hook and ImGui implementation)
+
 TsudaKageyu (for MinHook)
+
 Plugin-SDK
