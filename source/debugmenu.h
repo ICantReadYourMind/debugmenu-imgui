@@ -374,7 +374,11 @@ public:
 		{
 			auto pad = CPad::GetPad(0);
 			pad->DisablePlayerControls = 1;
+#ifdef GTASA
+			pad->Clear(false, false);
+#else
 			pad->Clear(false);
+#endif
 		}
 		else
 		{
