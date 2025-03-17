@@ -35,6 +35,11 @@ void __cdecl CPad__UpdatePadsHook()
 		CPad::ClearMouseHistory();
 #endif
 
+#ifndef GTASA
+		pad->Clear(false);
+#else
+		pad->Clear(false, false);
+#endif
 		pad->NewState.DPadUp = 0;
 		pad->OldState.DPadUp = 0;
 		pad->NewState.DPadDown = 0;
