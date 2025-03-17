@@ -401,3 +401,5 @@ FodyWeavers.xsd
 
 #
 output/
+
+project_files/
