@@ -350,7 +350,6 @@ public:
 	MenuEntry* GetEntryByName(std::string_view name);
 	void Process(void);
 };
-
 class debugmenu {
 public:
 	bool m_bIsActive;

@@ -10,22 +10,24 @@
 #include "gui/dx9hook.h"
 #include "gui/imgui/imgui.h"
 #include "debugmenu.h"
+#include "CMenuManager.h"
 
 using namespace plugin;
-
 injector::memory_pointer_raw CPadUpdateCall;
-
-void CPad__UpdatePadsHook()
+void __cdecl CPad__UpdatePadsHook()
 {
-	if (TheMenu.m_bIsActive)
-	{
-		auto pad = CPad::GetPad(0);
-		pad->OldMouseControllerState.x = 0.0f;
-		pad->OldMouseControllerState.y = 0.0f;
-		pad->NewMouseControllerState.x = 0.0f;
-		pad->NewMouseControllerState.y = 0.0f;
-		pad->PCTempMouseControllerState.x = 0.0f;
-		pad->PCTempMouseControllerState.y = 0.0f;
+	if (TheMenu.m_bIsActive) {
+		// Clear mouse data so the camera won't move when closing the debug menu
+		CPad* pad = CPad::GetPad(0);
+		CPad::UpdatePads();
+		CPad::NewMouseControllerState.x = 0.0f;
+		CPad::NewMouseControllerState.y = 0.0f;
+		CPad::ClearMouseHistory();
+		pad->NewState.DPadUp = 0;
+		pad->OldState.DPadUp = 0;
+		pad->NewState.DPadDown = 0;
+		pad->OldState.DPadDown = 0;
+		pad->DisablePlayerControls = true;
 		return;
 	}
 	else
@@ -39,7 +41,6 @@ BOOL __stdcall SetCursorPosHook(int x, int y) // this is so game doesnt keep cen
 	else
 		return SetCursorPos(x, y);
 }
-
 class debugmenuimgui
 {
 public:
@@ -49,28 +50,31 @@ public:
 
 		if (!(h == nullptr)) CloseHandle(h);
 
-		CPadUpdateCall = injector::ReadRelativeOffset(0x48C850 + 1);
+		CPadUpdateCall = injector::ReadRelativeOffset(0x4A4412 + 1); // update pads in cgame proccess
 
-		injector::MakeCALL(0x48C850, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x48AE15, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x48DE2F, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x48E717, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x582AA9, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x582C3C, CPad__UpdatePadsHook);
-		injector::MakeCALL(0x592C0C, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x4A4412, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x490476, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x4A5C7E, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x4A669F, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x4AB0A0, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x54460C, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x5FFFD9, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x60018F, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x61D9F4, CPad__UpdatePadsHook);
+		injector::MakeCALL(0x61DBB6, CPad__UpdatePadsHook);
+	 	injector::MakeCALL(0x61DD47, CPad__UpdatePadsHook);
 
-		patch::SetPointer(0x61D4E4, SetCursorPosHook);
-
-		Events::initGameEvent.after += []
+		injector::MakeCALL(0x602115, SetCursorPosHook);
+		Events::initGameEvent += []
 			{
 				TheMenu.m_bCanBeActivated = true;
 			};
 
-		CdeclEvent<AddressList<0x48E6DF, H_CALL>, PRIORITY_AFTER, ArgPickNone, void(void)> CCreditsRenderEvent;
+		CdeclEvent<AddressList<0x4A613D, H_CALL>, PRIORITY_AFTER, ArgPickNone, void(void)> CFontRenderEvent;
 
-		// we use ermaccer's hooks except endscene one as skygfx radiosity makes menu look awkward
-		CCreditsRenderEvent.after += [](){
-			GUIImplementationDX9::OnEndScene((LPDIRECT3DDEVICE9)RwD3D9GetCurrentD3DDevice());
+		CFontRenderEvent += [](){
+		GUIImplementationDX9::OnEndScene((LPDIRECT3DDEVICE9)RwD3D9GetCurrentD3DDevice());
 		};
+
 	};
 } debugmenuimguiPlugin;
