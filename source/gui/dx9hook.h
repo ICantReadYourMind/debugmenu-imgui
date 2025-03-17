@@ -1,5 +1,5 @@
 #pragma once
-#include "MinHook/include/MinHook.h"
+#include "../MinHook/include/MinHook.h"
 #include <d3d9.h>
 #include "gui_impl_dx9.h"
 #include "log.h"

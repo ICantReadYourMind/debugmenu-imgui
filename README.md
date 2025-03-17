@@ -20,3 +20,5 @@ ermaccer (for his d3d9 hook and ImGui implementation)
 TsudaKageyu (for MinHook)
 
 Plugin-SDK
+
+wuzimu7171 (for VC and SA port)

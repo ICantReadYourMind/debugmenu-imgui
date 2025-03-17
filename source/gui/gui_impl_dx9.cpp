@@ -6,7 +6,7 @@
 #include "imgui/imgui_impl_dx9.h"
 #include "font.h"
 #include "CTimer.h"
-#include "debugmenu.h"
+#include "..\debugmenu.h"
 
 bool  GUIImplementationDX9::ms_bInit = false;
 bool  GUIImplementationDX9::ms_bFailed = false;
