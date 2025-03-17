@@ -374,7 +374,7 @@ public:
 		{
 			auto pad = CPad::GetPad(0);
 			pad->DisablePlayerControls = 1;
-			pad->Clear(false);
+			pad->Clear(false, false);
 		}
 		else
 		{
