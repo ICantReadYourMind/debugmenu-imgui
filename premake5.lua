@@ -1,5 +1,5 @@
 workspace "debugmenu-imgui"
-	configurations { "ReleaseSA", "DebugSA", "DebugIII", "ReleaseVC", "DebugVC", "ReleaseIII", "DebugIII" }
+	configurations { "ReleaseSA", "DebugSA", "ReleaseVC", "DebugVC", "ReleaseIII", "DebugIII" }
 	location "project_files"
    
 project "debugmenu-imgui"
